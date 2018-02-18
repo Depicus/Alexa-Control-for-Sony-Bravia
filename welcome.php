@@ -2,27 +2,13 @@
 
 include_once 'config.inc';
 
-function debugToEmail($data) {
-    $allinfo = $data . '<br />';
-    foreach ($_GET as $name => $value) {
-        $allinfo .= "_GET = $name : $value<br>";
-    }
-    foreach ($_POST as $name => $value) {
-        $allinfo .= "_POST = $name : $value<br>";
-    }
-    foreach (filter_input_array(INPUT_COOKIE) as $name => $value) {
-        $allinfo .= "_COOKIE = $name : $value<br>";
-    }
-    /* foreach (filter_input_array(INPUT_SERVER) as $name => $value) {
-      $allinfo.= "_SERVER = $name : $value<br>";
-      } */
-
+function debugToEmail($emailaddress,$data) {
     $to = $emailaddress;
     $subject = "Debug Data from Alexa";
     $headers = 'From: debug@depicus.com' . "\r\n" . 'Reply-To: debug@depicus.com' . "\r\n" . 'X-Mailer: PHP/' . \phpversion();
     $headers .= "MIME-Version: 1.0\r\n";
     $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-    $body = $allinfo;
+    $body = $data;
     mail($to, $subject, $body, $headers);
 }
 
@@ -102,6 +88,16 @@ switch ($intentrequest) {
             $reply = "I think you know what the problem is just as well as I do.";
         }
         break;
+
+    case "FIVESTAR":
+        $reply = "changing channel to five star";
+        if (intval(sendircc($three)) != 200) {
+            $reply = "I think you know what the problem is just as well as I do.";
+        }
+        if (intval(sendircc($four)) != 200) {
+            $reply = "I think you know what the problem is just as well as I do.";
+        }
+        break;
     case "SKYNEWS":
         $reply = "changing channel to Sky News";
         if (intval(sendircc($four)) != 200) {
@@ -132,7 +128,7 @@ switch ($intentrequest) {
         break;
     default;
         $reply = "I have just picked up a fault in the AE-35 unit";
-        debugToEmail(json_encode($data) . ' <br /> ' . $intentrequest);
+        debugToEmail($emailaddress, json_encode($data) . ' <br /> ' . $intentrequest);
         break;
 }
 
