@@ -1,6 +1,7 @@
 <?php
 
 $applicationId = "your-add-id-here";
+$emailaddress = "your@email.com";
 
 $one = "AAAAAQAAAAEAAAAAAw==";
 $two = "AAAAAQAAAAEAAAABAw==";

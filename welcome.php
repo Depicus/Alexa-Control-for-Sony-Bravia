@@ -17,7 +17,7 @@ function debugToEmail($data) {
       $allinfo.= "_SERVER = $name : $value<br>";
       } */
 
-    $to = "brian.slack@depicus.com";
+    $to = $emailaddress;
     $subject = "Debug Data from Alexa";
     $headers = 'From: debug@depicus.com' . "\r\n" . 'Reply-To: debug@depicus.com' . "\r\n" . 'X-Mailer: PHP/' . \phpversion();
     $headers .= "MIME-Version: 1.0\r\n";
@@ -25,8 +25,6 @@ function debugToEmail($data) {
     $body = $allinfo;
     mail($to, $subject, $body, $headers);
 }
-
-//echo "hello...";
 
 $postedjson = file_get_contents('php://input');
 $data = json_decode($postedjson, true);
